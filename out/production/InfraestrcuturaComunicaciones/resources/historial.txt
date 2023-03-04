@@ -1,0 +1,3 @@
+crear,andres,123,123
+ingresar,andres,123,20
+consultar,andres,123,20
