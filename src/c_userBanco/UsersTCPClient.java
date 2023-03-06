@@ -20,62 +20,79 @@ public class UsersTCPClient {
 
 	private Socket clientSideSocket;
 
+	public static void main(String[] args) throws Exception {
+		UsersTCPClient ec = new UsersTCPClient();
+
+		ec.init();
+
+
+	}
+
 	public UsersTCPClient() {
 		System.out.println("Echo TCP cleinte is running... ");
 	}
 
 	public void init() throws Exception{
-		clientSideSocket = new Socket(SERVER, PORT);
+		while(true){
 
-		createStreams(clientSideSocket);
+			//createStreams(clientSideSocket);
+			protocol(clientSideSocket);
 
-		protocol(clientSideSocket);
+		}
 
-		clientSideSocket.close();
 	}
 
 
 
 	public void protocol (Socket socket) throws Exception {
-		System.out.println("Ingrese su usuario: ");
+		System.out.print("Ingrese su usuario: ");
 		String fromUser = SCANNER.nextLine();
-
-
 
 		System.out.println("mandando "+fromUser);
 		ingresarOpcion(fromUser);
-		//toNetwork.println(fromUser);
-
-
-		fromServer = fromNetwork.readLine();
-		System.out.println("[Client] from server LOGIN: " + fromServer);
+		//fromServer = fromNetwork.readLine();
+		//System.out.println("[Client] from server LOGIN: " + fromServer);
 	}
 
-	public void ingresarOpcion(String fromUser) {
+	public void ingresarOpcion(String fromUser) throws IOException {
 		String fromServerAnterior = "";
 		String opcion = fromUser.split(",")[0];
 		String message = fromUser;
 		if(opcion.equalsIgnoreCase("procesar")) {
+
 			String nombre = "./src/resources/";
 			nombre += fromUser.split(",")[1];
 			ArrayList<String> lista;
 			try {
 				lista = ArchivoUtil.leerArchivo(nombre);
 				for(String s: lista) {
+					clientSideSocket = new Socket(SERVER, PORT);
+					createStreams(clientSideSocket);
 					message = s;
 					toNetwork.println(message);
 					fromServer = fromNetwork.readLine();
-					System.out.println(fromServer);
+					System.out.println("[Client] from server LOGIN: " + fromServer);
+					clientSideSocket.close();
 					Thread.sleep(5000);
 				}
-			} catch (IOException | InterruptedException e ) {
+			} catch (Exception  e ) {
 				// TODO Auto-generated catch block
 				System.out.println("no existe el archivo mi perro");
 			}
 
 
 		}else {
+			clientSideSocket = new Socket(SERVER, PORT);
+			try {
+				createStreams(clientSideSocket);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			toNetwork.println(fromUser);
+			fromServer = fromNetwork.readLine();
+			System.out.println("[Client] from server LOGIN: " + fromServer);
+			clientSideSocket.close();
 		}
 
 	}
@@ -84,14 +101,6 @@ public class UsersTCPClient {
 	public void createStreams (Socket socket) throws Exception{
 		toNetwork = new PrintWriter(socket.getOutputStream(), true);
 		fromNetwork = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	}
-
-	public static void main(String[] args) throws Exception {
-		UsersTCPClient ec = new UsersTCPClient();
-		while(true) {
-			ec.init();
-		}
-
 	}
 
 }
