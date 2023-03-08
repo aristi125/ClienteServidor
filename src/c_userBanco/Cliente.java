@@ -2,18 +2,26 @@ package c_userBanco;
 
 public class Cliente {
 
+	/**
+	 * EN ESTA CLASE CLIENTE SE LE PASARA LAS VARIABLES
+	 * LAS CUALES DEBEN CUMPLIR CADA USUARIO PARA PERTENECER
+	 * Y OBTENR UNA CUENTA DEL BANCO
+	 */
 	private int id; 
 	private float saldo;
 	private String cuentaBancaria;
 	private String nombre;
 	private int pin;
-	
-	
+
+	/**
+	 * SE GENERA UN COSNTRUCTOR CON SOLO EL PARAMETRO DE NOMBRE
+	 * @param nombre
+	 */
 	public Cliente(String nombre) {
 		this.nombre = nombre;
 	}
 
-
+	//===================== GETTERS AND SETTERS===============================
 	public int getId() {
 		return id;
 	}

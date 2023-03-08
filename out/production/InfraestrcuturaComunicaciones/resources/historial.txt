@@ -1,3 +1,5 @@
 crear,andres,123,123
-ingresar,andres,123,20
-consultar,andres,123,20
+depositar,andres,123,20
+consultar,andres,123
+retirar,andres,123,5
+consultar,andres,123
